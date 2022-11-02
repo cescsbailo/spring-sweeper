@@ -313,7 +313,9 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
       "visited": true,
       "bomb": false
     },
-
+    {
+      "..." : "..."
+    },
     {
       "row": 8,
       "column": 8,
