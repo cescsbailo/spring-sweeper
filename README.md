@@ -99,44 +99,16 @@ GET http://localhost:8080/api/v1/game/{gameId}
 }
 ```
 ---
-##Start Game (First Click)
+##Start Game
 ```http
 PUT http://localhost:8080/api/v1/game/{gameId}
 ```
 ###Response Normal
 ```json
 {
-  "won": false,
-  "lose": false,
-  "discoveredCells": 5,
-  "flaggedMines": 0,
-  "startDate": "2022-11-02T09:43:02.830Z",
-  "endDate": null
+  "startDate": "2022-11-02T09:43:02.830Z"
 }
 ```
-###Response Won
-```json
-{
-  "won": true,
-  "lose": false,
-  "discoveredCells": 23,
-  "flaggedMines": 2,
-  "startDate": "2022-11-02T09:43:02.830Z",
-  "endDate": "2022-11-02T09:45:12.123Z"
-}
-```
-###Response Lose
-```json
-{
-  "won": false,
-  "lose": true,
-  "discoveredCells": 15,
-  "flaggedMines": 1,
-  "startDate": "2022-11-02T09:43:02.830Z",
-  "endDate": "2022-11-02T09:45:12.123Z"
-}
-```
----
 ---
 ##Flag a Cell (Right Click)
 ```http
@@ -326,4 +298,3 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
   ]
 }
 ```
----
