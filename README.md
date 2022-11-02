@@ -1,8 +1,8 @@
-##New Game
+## New Game
 ```http
 POST http://localhost:8080/api/v1/game
 ```
-###Request
+### Request
 ```json
 {
     "rows" : 9,
@@ -10,18 +10,18 @@ POST http://localhost:8080/api/v1/game
     "mines" : 10
 }
 ```
-###Response
+### Response
 ```json
 {
   "gameId": 3
 }
 ```
 ---
-##Game List
+## Game List
 ```http
 GET http://localhost:8080/api/v1/game
 ```
-###Response
+### Response
 ```json
 {
   "games": [
@@ -55,11 +55,11 @@ GET http://localhost:8080/api/v1/game
 }
 ```
 ---
-##Load Game
+## Load Game
 ```http
 GET http://localhost:8080/api/v1/game/{gameId}
 ```
-###Response
+### Response
 ```json
 {
   "gameId": 2,
@@ -99,11 +99,11 @@ GET http://localhost:8080/api/v1/game/{gameId}
 }
 ```
 ---
-##Start Game (First Click)
+## Start Game (First Click)
 ```http
 PUT http://localhost:8080/api/v1/game/{gameId}
 ```
-###Response Normal
+### Response Normal
 ```json
 {
   "won": false,
@@ -114,7 +114,7 @@ PUT http://localhost:8080/api/v1/game/{gameId}
   "endDate": null
 }
 ```
-###Response Won
+### Response Won
 ```json
 {
   "won": true,
@@ -125,7 +125,7 @@ PUT http://localhost:8080/api/v1/game/{gameId}
   "endDate": "2022-11-02T09:45:12.123Z"
 }
 ```
-###Response Lose
+### Response Lose
 ```json
 {
   "won": false,
@@ -138,11 +138,11 @@ PUT http://localhost:8080/api/v1/game/{gameId}
 ```
 ---
 ---
-##Flag a Cell (Right Click)
+## Flag a Cell (Right Click)
 ```http
 PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/flag
 ```
-###Response First Click
+### Response First Click
 ```json
 {
   "row": 3,
@@ -151,7 +151,7 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/flag
   "flagged": true
 }
 ```
-###Response Second Click
+### Response Second Click
 ```json
 {
   "row": 3,
@@ -160,7 +160,7 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/flag
   "flagged": false
 }
 ```
-###Response Third Click
+### Response Third Click
 ```json
 {
   "row": 3,
@@ -170,11 +170,11 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/flag
 }
 ```
 ---
-##Discover a Cell (Left Click)
+## Discover a Cell (Left Click)
 ```http
 PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
 ```
-###Response Empty Cell
+### Response Empty Cell
 ```json
 {
   "lose": false,
@@ -248,7 +248,7 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
   ]
 }
 ```
-###Response Cell Near Bomb
+### Response Cell Near Bomb
 ```json
 {
   "lose": false,
@@ -266,7 +266,7 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
   ]
 }
 ```
-###Response Cell With Bomb
+### Response Cell With Bomb
 ```json
 {
   "lose": true,
@@ -297,7 +297,7 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
   ]
 }
 ```
-###Response Won
+### Response Won
 ```json
 {
   "lose": false,
