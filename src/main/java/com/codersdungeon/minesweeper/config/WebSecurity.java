@@ -25,7 +25,7 @@ public class WebSecurity {
                 .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers( "/", "/js/**", "/css/**", "/images/**", "/h2-console/**").permitAll()
+                .antMatchers( "/", "/js/**", "/css/**", "/images/**", "/h2-console/**", "/login", "/logout").permitAll()
                 .antMatchers("/api/**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated();
 
