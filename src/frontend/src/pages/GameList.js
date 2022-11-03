@@ -4,18 +4,24 @@ import { Link } from 'react-router-dom'
 
 const GameList = () => {
     const [gameList, setGameList] = useState([])
+    const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
         console.log('loadGames')
         axios.get('/game').then(response => {
             setGameList(response.data.games)
+            setLoaded(true)
         })
     }, [])
+
+    if(!loaded){
+        return <div>Loading...</div>
+    }
 
     return (
         <section className='section'>
             <h1>game list</h1>
-            <table>
+            <table className='game-list'>
                 <thead>
                     <tr>
                         <th>Player</th>

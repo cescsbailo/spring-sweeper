@@ -10,19 +10,19 @@ div.center-container {
     margin-top: 80px;
 }
 
-table {
+table.board {
     background-color: whitesmoke;
     align-self: center;
     border: 10px ridge lightgray;
     cursor: pointer;
 }
 
-th {
+table.board th {
     border: 3px solid gray;
     height: 48px;
 }
 
-td {
+table.board td {
     border: 3px darkgray;
     width: 32px;
     height: 32px;
@@ -34,47 +34,47 @@ td {
     background-color: lightgray;
 }
 
-td.normal {
+table.board td.normal {
     border-style: outset;
 }
 
-td.clicked {
+table.board td.clicked {
     border-style: inset;
 }
 
-td.visited {
+table.board td.visited {
     border: 3px solid lightgray;
     background-color: whitesmoke;
 }
 
-td.one {
+table.board td.one {
     color: blue;
 }
 
-td.two {
+table.board td.two {
     color: green;
 }
 
-td.three {
+table.board td.three {
     color: red;
 }
 
-td.four {
+table.board td.four {
     color: darkblue;
 }
 
-td.five {
+table.board td.five {
     color: darkred;
 }
 
-td.six {
+table.board td.six {
     color: darkcyan;
 }
 
-td.seven {
+table.board td.seven {
     color: black;
 }
 
-td.eight {
+table.board td.eight {
     color: darkgray;
 }

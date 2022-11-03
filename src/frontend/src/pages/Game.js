@@ -1,11 +1,14 @@
-import React from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
+import axios from 'axios'
+import Board from '../components/Board'
 
 const Game = () => {
     const { gameId } = useParams()
+
     return (
         <section className='section'>
-            <h1>game {gameId}</h1>
+            <Board gameId={gameId} />
         </section>
     )
 }

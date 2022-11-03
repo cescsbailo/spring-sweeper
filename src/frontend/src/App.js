@@ -13,8 +13,6 @@ import SharedLayout from './pages/SharedLayout'
 import Games from './pages/Games'
 import ProtectedRoute from './pages/ProtectedRoute'
 
-
-
 const App = () => {
 
   const [user, setUser] = useState(null)
