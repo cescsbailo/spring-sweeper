@@ -19,12 +19,15 @@ class Board extends React.Component {
         super(props)
 
         this.state = {
-            gameData: {},
+            gameData: {
+                cells : []
+            },
             currentCell: {},
-            cells: [],
-            time: 0,
             loaded: false,
+            started: false,
+            ended: false,
             smile: smileHappy,
+            time: 0,
             timer : null
         }
 
@@ -48,17 +51,16 @@ class Board extends React.Component {
         let row = parseInt(e.target.dataset.row)
         let column = parseInt(e.target.dataset.column)
 
-        let currentCell = {...this.state.cells[row][column]}
+        let currentCell = {...this.state.gameData.cells[row][column]}
         if (currentCell.visited) {
             return
         }
 
-        let cells = this.state.cells.map(row => [...row])
+        let cells = this.state.gameData.cells.map(row => [...row])
         cells[row][column].state = 'clicked'
 
         this.setState({
-            currentCell: currentCell,
-            cells: cells,
+            gameData: {...this.state.gameData, cells : cells},
             smile: smileWorry
         })
     }
@@ -66,17 +68,20 @@ class Board extends React.Component {
     handleClickUp = (e) => {
         e.preventDefault()
 
-        if (e.target.nodeName.toLowerCase() !== 'td' || this.state.gameData.won || this.state.gameData.lost || this.state.currentCell.visited) {
+        if (e.target.nodeName.toLowerCase() !== 'td' || this.state.gameData.won || this.state.gameData.lost) {
+            return
+        }
+
+        let row = parseInt(e.target.dataset.row)
+        let column = parseInt(e.target.dataset.column)
+
+        let currentCell = {...this.state.gameData.cells[row][column]}
+        if (currentCell.visited) {
             return
         }
 
         let startHandler = this.state.gameData.startDate ? this.noAction : this.startGame
         let clickHandler = e.button === 2 ? this.flagCell : this.discoverCell
-
-        let row = parseInt(e.target.dataset.row)
-        let column = parseInt(e.target.dataset.column)
-
-        console.log(this.state.currentCell)
 
         startHandler(row, column).then(clickHandler)
     }
@@ -85,81 +90,85 @@ class Board extends React.Component {
         return Promise.resolve({ row, column })
     }
 
-    startGame = (row, column) => {
+    startGame = async (row, column) => {
         return axios.put('/game/' + this.props.gameId)
             .then(response => {
-                let timer = setInterval(this.countTime, 1000)
                 this.setState({
                     gameData : {
                         ...this.state.gameData,
                         startDate: response.data.startDate,
                     },
-                    timer : timer
+                    started : true
                 })
                 return { row, column }
             })
     }
 
     countTime = () => {
-        this.setState({
-            time : this.state.time + 1
-        })
+        if(this.state.started && !this.state.ended){
+            this.setState({
+                time : this.state.time + 1
+            })
+        }
     }
 
-    discoverCell = (response) => {
-        let row = response.row
-        let column = response.column
+    discoverCell = (cell) => {
+        let row = cell.row
+        let column = cell.column
         axios.put('/board/' + this.state.gameData.boardId + '/cell/' + row + '/' + column + '/discover')
             .then(response => {
-                let cells = this.state.cells.map(row => [...row])
+                let won =  response.data.won
+                let lost = response.data.lost
+
+                let cells = this.state.gameData.cells.map(row => [...row])
                 response.data.cells.forEach(c => {
                     let currentCell = cells[c.row][c.column]
                     if (c.bomb) {
                         currentCell.content = bomb
-                    }
-                    if (c.flagged) {
+                    }else if (c.flagged) {
                         currentCell.content = flag
                     } else if (c.marked) {
                         currentCell.content = question
                     } else if (c.nearBombs != 0) {
                         currentCell.content = c.nearBombs
                     }
-
-                    currentCell.visited = true
-                    currentCell.state = 'visited ' + colors[c.nearBombs]
+                    if(c.visited || won || lost){
+                        currentCell.visited = c.visited
+                        currentCell.state = 'visited ' + colors[c.nearBombs]
+                    }
                 })
 
+               
                 let timer = this.state.timer
-                let smile = smileHappy
-                if (response.data.lose) {
-                    smile = skull
+                let ended = this.state.ended
+                let smile = lost ? skull: ( won? smileCool : smileHappy )
+                if (lost || won) {
                     clearInterval(timer)
                     timer = null
-                } else if (response.data.won) {
-                    smile = smileCool
+                    ended = true
                 }
 
                 this.setState({
                     smile: smile,
-                    currentCell: {},
-                    cells: cells,
                     timer: timer,
+                    ended : ended,
                     gameData: {
                         ...this.state.gameData,
-                        won: response.data.won,
-                        lost: response.data.lost,
-                        discoveredCells: response.data.cells.length
+                        cells: cells,
+                        won: won,
+                        lost: lost,
+                        discoveredCells: response.data.discoveredCells
                     }
                 })
             })
     }
 
-    flagCell = (response) => {
-        let row = response.row
-        let column = response.column
+    flagCell = (cell) => {
+        let row = cell.row
+        let column = cell.column
         axios.put('/board/' + this.state.gameData.boardId + '/cell/' + row + '/' + column + '/flag')
             .then(response => {
-                let cells = this.state.cells.map(row => [...row])
+                let cells = this.state.gameData.cells.map(row => [...row])
                 let cell = cells[row][column]
                       
                 if (response.data.flagged) {
@@ -169,14 +178,14 @@ class Board extends React.Component {
                 } else {
                     cell.content = ''
                 }
-                cell.state = 'normal'
+
+                cell.state = ''
                       
                 this.setState({
                     smile: smileHappy,
-                    currentCell: {},
-                    cells: cells,
                     gameData: {
                         ...this.state.gameData,
+                        cells: cells,
                         discoveredCells: response.data.discoveredCells,
                         totalMines: response.data.totalMines
                     }
@@ -193,28 +202,45 @@ class Board extends React.Component {
     componentDidMount = () => {
         axios.get('game/' + this.props.gameId)
             .then(response => {
-                let rows = response.data.cells
-                let cells = []
+                let started = response.data.startDate
+                let ended = response.data.endDate
 
-                rows.forEach(r => {
-                    let row = []
-                    r.forEach(cell => {
-                        row.push({ row: cell.row, column: cell.column, state: 'normal', content: '' })
+                response.data.cells.forEach(row =>{
+                    row.forEach(cell =>{
+                        if (cell.bomb && ended) {
+                            cell.content = bomb
+                            cell.state = 'visited'
+                        }else if (cell.flagged) {
+                            cell.content = flag
+                        } else if (cell.marked) {
+                            cell.content = question
+                        }else if (cell.nearBombs != 0 && started && cell.visited || ended) {
+                            cell.content = cell.nearBombs
+                        } else{
+                            cell.content = ''
+                        }
+
+                        if(cell.visited || ended){
+                            cell.state = 'visited ' + colors[cell.nearBombs]
+                        }
                     })
-                    cells.push(row)
                 })
 
-                let time = response.data.duration || 0
-                let startDate = response.data.startDate || null
                 let timer = null
-                if(startDate && time > 0){
+                if(started && !ended){
                     timer = setInterval(this.countTime, 1000)
                 }
 
+                let won =  response.data.won
+                let lost = response.data.lost
+                let smile = lost ? skull: ( won? smileCool : smileHappy )
+
                 this.setState({
-                    cells: cells,
                     gameData: response.data,
-                    time : time,
+                    smile : smile,
+                    time : response.data.time,
+                    started : started,
+                    ended : ended,
                     loaded: true,
                     timer : timer
                 })
@@ -229,18 +255,18 @@ class Board extends React.Component {
             <table className='board' onMouseDown={this.handleClickDown} onMouseUp={this.handleClickUp} onContextMenu={this.disableMenu} >
                 <thead>
                     <tr>
-                        <th colSpan='3'>{this.state.gameData.totalMines}</th>
+                        <th colSpan='3'>{this.state.gameData.totalMines || 0}</th>
                         <th colSpan={this.state.gameData.columns - 6}>{this.state.smile}</th>
-                        <th colSpan='3'>{this.state.time}</th>
+                        <th colSpan='3'>{this.state.gameData.time || 0}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {this.state.cells.map((row, i) => {
+                    {this.state.gameData.cells.map((row, i) => {
                         return (
                             <tr key={i}>{
                                 row.map(cell => {
                                     return (
-                                        <td key={cell.row + '-' + cell.column} data-row={cell.row} data-column={cell.column} className={cell.state}>{cell.content}</td>
+                                        <td key={cell.row + '-' + cell.column} data-row={cell.row} data-column={cell.column} className={cell.state}>{cell.content || ''}</td>
                                     )
                                 }
                                 )}

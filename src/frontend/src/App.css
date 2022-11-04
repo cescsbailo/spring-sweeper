@@ -34,7 +34,7 @@ table.board td {
     background-color: lightgray;
 }
 
-table.board td.normal {
+table.board td {
     border-style: outset;
 }
 

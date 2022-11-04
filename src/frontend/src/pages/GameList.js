@@ -6,8 +6,15 @@ const GameList = () => {
     const [gameList, setGameList] = useState([])
     const [loaded, setLoaded] = useState(false)
 
+    const deleteGame = (gameId) =>{
+        axios.delete('/game/' + gameId)
+        .then(response => {
+            let list = gameList.filter(g => g.gameId != gameId)
+            setGameList(list)
+        })
+    }
+
     useEffect(() => {
-        console.log('loadGames')
         axios.get('/game').then(response => {
             setGameList(response.data.games)
             setLoaded(true)
@@ -34,6 +41,7 @@ const GameList = () => {
                         <th>Time</th>
                         <th>Won</th>
                         <th>Lost</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,11 +53,12 @@ const GameList = () => {
                                 <td>{game.rows}</td>
                                 <td>{game.columns}</td>
                                 <td>{game.mines}</td>
-                                <td>{game.startDate}</td>
-                                <td>{game.endDate}</td>
-                                <td>{game.duration}</td>
-                                <td>{game.won}</td>
-                                <td>{game.lost}</td>
+                                <td>{new Date(game.startDate).toLocaleTimeString('it-IT')}</td>
+                                <td>{new Date(game.endDate).toLocaleTimeString('it-IT')}</td>
+                                <td>{game.time}</td>
+                                <td>{game.won?'Yes':'No'}</td>
+                                <td>{game.lost?'Yes':'No'}</td>
+                                <td><button onClick={()=>deleteGame(game.gameId)}>Delete</button></td>
                             </tr>
                         ))
                     }
