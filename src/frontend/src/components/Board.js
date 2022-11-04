@@ -80,7 +80,7 @@ class Board extends React.Component {
             return
         }
 
-        let startHandler = this.state.gameData.startDate ? this.noAction : this.startGame
+        let startHandler = this.state.started ? this.noAction : this.startGame
         let clickHandler = e.button === 2 ? this.flagCell : this.discoverCell
 
         startHandler(row, column).then(clickHandler)
@@ -93,11 +93,16 @@ class Board extends React.Component {
     startGame = async (row, column) => {
         return axios.put('/game/' + this.props.gameId)
             .then(response => {
+                let timer = this.state.timer
+                if(!timer){
+                    timer = setInterval(this.countTime, 1000)
+                }
                 this.setState({
                     gameData : {
                         ...this.state.gameData,
                         startDate: response.data.startDate,
                     },
+                    timer : timer,
                     started : true
                 })
                 return { row, column }
@@ -156,8 +161,7 @@ class Board extends React.Component {
                         ...this.state.gameData,
                         cells: cells,
                         won: won,
-                        lost: lost,
-                        discoveredCells: response.data.discoveredCells
+                        lost: lost
                     }
                 })
             })
@@ -186,7 +190,6 @@ class Board extends React.Component {
                     gameData: {
                         ...this.state.gameData,
                         cells: cells,
-                        discoveredCells: response.data.discoveredCells,
                         totalMines: response.data.totalMines
                     }
                 })
@@ -202,8 +205,11 @@ class Board extends React.Component {
     componentDidMount = () => {
         axios.get('game/' + this.props.gameId)
             .then(response => {
+                let won =  response.data.won
+                let lost = response.data.lost
+
                 let started = response.data.startDate
-                let ended = response.data.endDate
+                let ended = won || lost
 
                 response.data.cells.forEach(row =>{
                     row.forEach(cell =>{
@@ -231,14 +237,12 @@ class Board extends React.Component {
                     timer = setInterval(this.countTime, 1000)
                 }
 
-                let won =  response.data.won
-                let lost = response.data.lost
                 let smile = lost ? skull: ( won? smileCool : smileHappy )
 
                 this.setState({
                     gameData: response.data,
                     smile : smile,
-                    time : response.data.time,
+                    time : parseInt(Math.round(response.data.time / 1000)),
                     started : started,
                     ended : ended,
                     loaded: true,
@@ -246,6 +250,18 @@ class Board extends React.Component {
                 })
             })
     }
+
+    componentWillUnmount = ()=>{
+        if(this.state.ended){
+            return
+        }
+        axios.put('game/' + this.props.gameId + '/pause')
+        .then(response=>{
+            let timer = this.state.timer
+            clearInterval(timer)
+        })
+    }
+
     render = () => {
         if (!this.state.loaded) {
             return <div>Loading...</div>
@@ -257,7 +273,7 @@ class Board extends React.Component {
                     <tr>
                         <th colSpan='3'>{this.state.gameData.totalMines || 0}</th>
                         <th colSpan={this.state.gameData.columns - 6}>{this.state.smile}</th>
-                        <th colSpan='3'>{this.state.gameData.time || 0}</th>
+                        <th colSpan='3'>{this.state.time || 0}</th>
                     </tr>
                 </thead>
                 <tbody>

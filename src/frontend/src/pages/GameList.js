@@ -36,8 +36,6 @@ const GameList = () => {
                         <th>Rows</th>
                         <th>Columns</th>
                         <th>Mines</th>
-                        <th>Start</th>
-                        <th>End</th>
                         <th>Time</th>
                         <th>Won</th>
                         <th>Lost</th>
@@ -53,9 +51,7 @@ const GameList = () => {
                                 <td>{game.rows}</td>
                                 <td>{game.columns}</td>
                                 <td>{game.mines}</td>
-                                <td>{new Date(game.startDate).toLocaleTimeString('it-IT')}</td>
-                                <td>{new Date(game.endDate).toLocaleTimeString('it-IT')}</td>
-                                <td>{game.time}</td>
+                                <td>{parseInt(Math.round(game.time / 1000))}s</td>
                                 <td>{game.won?'Yes':'No'}</td>
                                 <td>{game.lost?'Yes':'No'}</td>
                                 <td><button onClick={()=>deleteGame(game.gameId)}>Delete</button></td>
