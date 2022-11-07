@@ -1,3 +1,21 @@
+## Login
+```http
+POST http://localhost:8080/login
+```
+### Response OK
+```json
+{
+  "success": true
+}
+```
+### Response KO
+```json
+{
+  "success" : false,
+  "message" : "Not Authorized" 
+}
+```
+---
 ## New Game
 ```http
 POST http://localhost:8080/api/v1/game
@@ -26,78 +44,68 @@ GET http://localhost:8080/api/v1/game
 {
   "games": [
     {
-      "gameId": 1,
-      "boardId": 1,
+      "gameId": 36,
       "rows": 9,
       "columns": 9,
       "mines": 10,
       "player": "user",
-      "startDate": null,
-      "endDate": null,
-      "duration": null,
+      "time": 10089,
       "won": false,
       "lost": false
     },
     {
-      "gameId": 2,
-      "boardId": 2,
+      "gameId": 37,
       "rows": 9,
       "columns": 9,
       "mines": 10,
       "player": "user",
-      "startDate": "2022-11-02T09:30:09.593Z",
-      "endDate": null,
-      "duration": 234442,
+      "time": 2788,
       "won": false,
+      "lost": true
+    },
+    {
+      "gameId": 38,
+      "rows": 9,
+      "columns": 9,
+      "mines": 10,
+      "player": "user",
+      "time": 89020,
+      "won": true,
       "lost": false
     }
   ]
 }
 ```
 ---
+## Delete Game
+```http
+DELETE http://localhost:8080/api/v1/game/{gameId}
+```
+### Response
+```http
+204 No Content
+```
+---
+## Pause Game
+```http
+PUT http://localhost:8080/api/v1/game/{gameId}/pause
+```
+### Response
+```http
+204 No Content
+```
+---
 ## Load Game
 ```http
 GET http://localhost:8080/api/v1/game/{gameId}
 ```
-### Response
-```json
-{
-  "gameId": 2,
-  "boardId": 2,
-  "columns": 9,
-  "rows": 9,
-  "totalCells": 81,
-  "totalMines": 10,
-  "discoveredCells": 62,
-  "flaggedMines": 7,
-  "duration": 123543,
-  "won": false,
-  "lost": false,
-  "cells": [
-    {
-      "row": 0,
-      "column": 0,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": true,
-      "bomb": false
-    },
-    {
-      "..." : "..."
-    },
-    {
-      "row": 8,
-      "column": 8,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": true,
-      "bomb": false
-    }
-  ]
-}
-```
+### Running Game Response
+[Running Game](doc/load_running_game.md)
+### Lost Game Response
+[Lost Game](doc/load_lost_game.md)
+### Won Game Response
+[Won Game](doc/load_won_game.md)
+
 ---
 ## Start Game
 ```http
@@ -117,28 +125,25 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/flag
 ### Response First Click
 ```json
 {
-  "row": 3,
-  "column": 5,
   "marked": false,
-  "flagged": true
+  "flagged": true,
+  "totalMines": 9
 }
 ```
 ### Response Second Click
 ```json
 {
-  "row": 3,
-  "column": 5,
   "marked": true,
-  "flagged": false
+  "flagged": false,
+  "totalMines": 10
 }
 ```
 ### Response Third Click
 ```json
 {
-  "row": 3,
-  "column": 5,
   "marked": false,
-  "flagged": false
+  "flagged": false,
+  "totalMines": 10
 }
 ```
 ---
@@ -147,153 +152,36 @@ PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/flag
 PUT http://localhost:8080/api/v1/board/{boardId}/cell/{row}/{column}/discover
 ```
 ### Response Empty Cell
-```json
-{
-  "lose": false,
-  "won": false,
-  "discoveredCells": 9,
-  "cells": [
-    {
-      "row": 0,
-      "column": 0,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 0,
-      "column": 1,
-      "nearBombs": 1,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 1,
-      "column": 0,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 1,
-      "column": 1,
-      "nearBombs": 1,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 2,
-      "column": 0,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 2,
-      "column": 1,
-      "nearBombs": 2,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 3,
-      "column": 0,
-      "nearBombs": 1,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    },
-    {
-      "row": 3,
-      "column": 1,
-      "nearBombs": 2,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    }
-  ]
-}
-```
+[Empty Cell](doc/discover_empty.md)
 ### Response Cell Near Bomb
 ```json
 {
-  "lose": false,
-  "won": false,
-  "discoveredCells": 1,
-  "cells": [
-    {
-      "row": 2,
-      "column": 3,
-      "nearBombs": 1,
-      "marked": false,
-      "flagged": false,
-      "visited": true
-    }
-  ]
-}
-```
-### Response Cell With Bomb
-```json
-{
-  "lose": true,
-  "won": false,
-  "discoveredCells": 9,
   "cells": [
     {
       "row": 0,
-      "column": 0,
-      "nearBombs": 0,
-      "marked": false,
+      "column": 2,
+      "nearBombs": 1,
       "flagged": false,
+      "marked": false,
       "visited": true,
-      "bomb": false
-    },
-    {
-      "..." : "..."
-    },
-    {
-      "row": 8,
-      "column": 8,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": false,
       "bomb": false
     }
   ]
 }
 ```
+### Response Cell With A Bomb
+[Lose Game](doc/discover_lose.md)
 ### Response Won
 ```json
 {
-  "lose": false,
   "won": true,
-  "discoveredCells": 71,
   "cells": [
     {
-      "row": 0,
-      "column": 0,
-      "nearBombs": 0,
-      "marked": false,
-      "flagged": false,
-      "visited": true,
-      "bomb": false
-    },
-    {
-      "..." : "..."
-    },
-    {
-      "row": 8,
-      "column": 8,
+      "row": 3,
+      "column": 4,
       "nearBombs": 1,
-      "marked": false,
       "flagged": false,
+      "marked": false,
       "visited": true,
       "bomb": false
     }
