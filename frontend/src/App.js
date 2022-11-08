@@ -22,7 +22,7 @@ const App = () => {
 
   useEffect(() => {
 
-    axios.defaults.baseURL = 'http://localhost:8080/api/v2'
+    axios.defaults.baseURL = 'http://localhost:8080/api/v1'
     axios.defaults.headers['Accept'] = 'application/json'
     axios.defaults.headers.post['Content-Type'] = 'application/json'
     axios.defaults.withCredentials = true
