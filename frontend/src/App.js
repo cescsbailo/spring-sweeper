@@ -44,11 +44,10 @@ const App = () => {
   return (
     <Routes>
       <Route path='/' element={<SharedLayout user={user} />} >
-        <Route index element={<Home />} />
+        <Route index element={<Home user={user}/>} />
         <Route path='/login' element={<Login setUser={setUser} setError={setError}/>} />
         <Route path='/logout' element={<Logout user={user} setUser={setUser} setError={setError}/>} />
         <Route path='/games' element={<ProtectedRoute user={user} />}>
-          <Route index element={<Games user={user} />} />
           <Route path='new' element={<NewGame />} />
           <Route path=':gameId' element={<Game />} />
           <Route path='list' element={<GameList />} />

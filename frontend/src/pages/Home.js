@@ -1,9 +1,9 @@
-const Home = () => {
+const Home = ({user}) => {
 
     return (
         <section className='section'>
-            <h2>home</h2>
-            <p>Minesweeper</p>
+            <h2>Minesweeper</h2>
+            {user && <h3>Welcome, {user.username}</h3>}
         </section>
     )
 

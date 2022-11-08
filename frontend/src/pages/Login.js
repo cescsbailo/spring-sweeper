@@ -33,7 +33,7 @@ const Login = ({ setUser, setError }) => {
                 username: username,
                 password: password
             })
-            navigate('/games')
+            navigate('/')
         })
     }
 

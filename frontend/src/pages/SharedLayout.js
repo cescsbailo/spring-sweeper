@@ -1,13 +1,16 @@
 import React from 'react'
+import { Container } from 'react-bootstrap'
 import { Outlet } from 'react-router-dom'
-import Navbar from '../components/Navbar'
+import Navigation from '../components/Navigation'
 
 const SharedLayout = ({ user }) => {
 
     return (
         <>
-            <Navbar user={user} />
-            <Outlet />
+            <Navigation user={user} />
+            <Container>
+                <Outlet />
+            </Container>
         </>
     )
 
