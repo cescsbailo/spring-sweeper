@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
@@ -63,9 +63,9 @@ const NewGame = () => {
         setMaxMines(maxMines)
     }
 
-    const getMaxMines = () => {
+    const getMaxMines = useCallback(() => {
         return (rows - 1) * (columns - 1)
-    }
+    }, [rows, columns])
 
     const selectDifficulty = async (e) => {
         const difficulty = difficulties[e.target.value]
@@ -90,7 +90,7 @@ const NewGame = () => {
 
     useEffect(() => {
         setMaxMines(getMaxMines())
-    }, [rows, columns])
+    }, [getMaxMines])
 
     return (
         <form id='form-difficulty' onSubmit={startGame}>

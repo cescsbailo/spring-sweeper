@@ -4,12 +4,12 @@ import axios from 'axios'
 const smileCool = <>&#128526;</>
 const smileHappy = <>&#128578;</>
 const smileWorry = <>&#128558;</>
-const smileSad = <>&#128577;</>
 const question = <>&#10067;</>
 const flag = <>&#128681;</>
 const bomb = <>&#128163;</>
 const skull = <>&#128128;</>
-const dice = <>&#127922;</>
+//const dice = <>&#127922;</>
+//const smileSad = <>&#128577;</>
 
 const colors = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight']
 
@@ -134,7 +134,7 @@ class Board extends React.Component {
                         currentCell.content = flag
                     } else if (c.marked) {
                         currentCell.content = question
-                    } else if (c.nearBombs != 0) {
+                    } else if (c.nearBombs !== 0) {
                         currentCell.content = c.nearBombs
                     }
                     if (c.visited || won || lost) {
@@ -220,7 +220,7 @@ class Board extends React.Component {
                             cell.content = flag
                         } else if (cell.marked) {
                             cell.content = question
-                        } else if (cell.nearBombs != 0 && started && cell.visited || ended) {
+                        } else if (cell.nearBombs !== 0 && started && (cell.visited || ended )) {
                             cell.content = cell.nearBombs
                         } else {
                             cell.content = ''

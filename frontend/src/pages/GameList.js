@@ -9,7 +9,7 @@ const GameList = () => {
     const deleteGame = (gameId) =>{
         axios.delete('/game/' + gameId)
         .then(response => {
-            let list = gameList.filter(g => g.gameId != gameId)
+            let list = gameList.filter(g => g.gameId !== gameId)
             setGameList(list)
         })
     }

@@ -39,7 +39,7 @@ const App = () => {
       password: user?.password
     }
 
-  }, [user])
+  }, [user, navigate])
 
   return (
     <Routes>
