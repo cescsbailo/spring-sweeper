@@ -1,6 +1,6 @@
 import './App.css'
 import { useState, useEffect } from 'react'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import Home from './pages/Home'
 import NewGame from './pages/NewGame'
@@ -16,16 +16,22 @@ import ProtectedRoute from './pages/ProtectedRoute'
 const App = () => {
 
   const [user, setUser] = useState(null)
+  const [error, setError] = useState(null)
+
+  const navigate = useNavigate()
 
   useEffect(() => {
 
-    axios.defaults.baseURL = 'http://localhost:8080/api/v1'
+    axios.defaults.baseURL = 'http://localhost:8080/api/v2'
     axios.defaults.headers['Accept'] = 'application/json'
     axios.defaults.headers.post['Content-Type'] = 'application/json'
     axios.defaults.withCredentials = true
 
     axios.interceptors.response.use((response) => response, (error) => {
-      console.log(error)
+      console.log(error.response.data)
+      setError(error.response.data)
+      navigate('error')
+      return Promise.reject(error)
     })
 
     axios.defaults.auth = {
@@ -47,7 +53,7 @@ const App = () => {
           <Route path=':gameId' element={<Game />} />
           <Route path='list' element={<GameList />} />
         </Route>
-        <Route path='*' element={<Error />} />
+        <Route path='*' element={<Error error={error}/>} />
       </Route>
     </Routes>
   )
