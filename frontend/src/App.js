@@ -45,8 +45,8 @@ const App = () => {
     <Routes>
       <Route path='/' element={<SharedLayout user={user} />} >
         <Route index element={<Home />} />
-        <Route path='/login' element={<Login setUser={setUser} />} />
-        <Route path='/logout' element={<Logout setUser={setUser} />} />
+        <Route path='/login' element={<Login setUser={setUser} setError={setError}/>} />
+        <Route path='/logout' element={<Logout user={user} setUser={setUser} setError={setError}/>} />
         <Route path='/games' element={<ProtectedRoute user={user} />}>
           <Route index element={<Games user={user} />} />
           <Route path='new' element={<NewGame />} />

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, setError }) => {
 
     const navigate = useNavigate()
 
@@ -23,16 +23,18 @@ const Login = ({ setUser }) => {
             withCredentials: false,
             auth: null
         }).then(response => {
-                if (response.data.success) {
-                    setUser({
-                        username: username,
-                        password: password
-                    })
-                    navigate('/games')
-                } else {
-                    Promise.reject(response)
-                }
+            if (!response.data.success) {
+                setError({ status: 401, error: 'Unauthorized', message: response.data.message, path: '/login', timestamp: Date.now() })
+                navigate('/error')
+                return
+            }
+
+            setUser({
+                username: username,
+                password: password
             })
+            navigate('/games')
+        })
     }
 
     return (
