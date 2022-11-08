@@ -12,7 +12,24 @@ POST http://localhost:8080/login
 ```json
 {
   "success" : false,
-  "message" : "Not Authorized" 
+  "message" : "Login error" 
+}
+```
+## Logout
+```http
+POST http://localhost:8080/exit
+```
+### Response OK
+```json
+{
+  "success": true
+}
+```
+### Response KO
+```json
+{
+  "success" : false,
+  "message" : "Logout error" 
 }
 ```
 ---
