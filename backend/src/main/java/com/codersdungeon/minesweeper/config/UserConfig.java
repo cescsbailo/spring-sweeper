@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.PostConstruct;
 
 @Configuration
+@Profile("dev")
 public class UserConfig {
     private static final Logger LOG = LoggerFactory.getLogger(WebSecurity.class);
 
@@ -22,7 +23,6 @@ public class UserConfig {
 //    private PlayerRepository playerRepository;
 //
 //    @PostConstruct
-//    @Profile("dev")
 //    public void createTestUsers() {
 //        LOG.debug("dev config");
 //        if(playerRepository.findByUsername("user").isPresent()){
