@@ -11,8 +11,8 @@ import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
-@Profile("dev")
-public class DevConfig {
+@Profile("cors")
+public class CorsConfig {
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
