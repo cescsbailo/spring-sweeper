@@ -11,7 +11,7 @@ const Error = ({ error }) => {
     }
 
     return (
-        <section className='section'>
+        <section>
             <h4>{error.status} : {error.error}</h4>
             <p>
                 <dl>

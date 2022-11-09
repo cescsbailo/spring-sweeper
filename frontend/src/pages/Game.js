@@ -5,7 +5,7 @@ const Game = () => {
     const { gameId } = useParams()
 
     return (
-        <section className='section'>
+        <section className='d-flex justify-content-center' >
             <Board gameId={gameId} />
         </section>
     )

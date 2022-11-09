@@ -97,7 +97,7 @@ const NewGame = () => {
         <section className='col-lg-4'>
             <Form onSubmit={startGame}>
                 <FormGroup controlId='input-difficulty' className='mb-3'>
-                    <FormLabel></FormLabel>
+                    <FormLabel>Difficulty</FormLabel>
                     <Form.Select aria-label='Select Difficulty' onChange={selectDifficulty}>
                         <option value='easy'>Easy</option>
                         <option value='medium'>Medium</option>

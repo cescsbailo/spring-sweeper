@@ -2,18 +2,13 @@ html,
 body {
     margin: 0;
     padding: 0;
-}
-
-div.center-container {
-    display: flex;
-    justify-content: center;
-    margin-top: 80px;
+    padding-top: 30px;
 }
 
 table.board {
     background-color: whitesmoke;
     align-self: center;
-    border: 10px ridge lightgray;
+    border: 8px ridge lightgray;
     cursor: pointer;
     caption-side: unset;
     border-collapse: unset;
@@ -23,19 +18,18 @@ table.board {
 }
 
 table.board th {
-    border: 3px solid gray;
-    height: 48px;
+    border: 2px solid gray;
+    height: 36px;
     text-align: center;
 }
 
 table.board td {
-    border: 3px darkgray;
-    width: 32px;
-    height: 32px;
+    border: 2px darkgray;
+    width: 24px;
+    height: 24px;
     text-align: center;
     vertical-align: center;
-    font-family: courier;
-    font-size: 20px;
+    font-family: monospace;
     font-weight: bold;
     background-color: lightgray;
 }
@@ -50,7 +44,7 @@ table.board td.clicked {
 }
 
 table.board td.visited {
-    border: 3px solid lightgray;
+    border: 2px solid lightgray;
     background-color: whitesmoke;
 }
 

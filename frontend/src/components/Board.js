@@ -268,7 +268,7 @@ class Board extends React.Component {
         }
 
         return (
-            <table className='board' onMouseDown={this.handleClickDown} onMouseUp={this.handleClickUp} onContextMenu={this.disableMenu} >
+            <table className='board' onMouseDown={this.handleClickDown} onMouseUp={this.handleClickUp} onContextMenu={this.disableMenu}>
                 <thead>
                     <tr>
                         <th colSpan='3'>{this.state.gameData.totalMines || 0}</th>
