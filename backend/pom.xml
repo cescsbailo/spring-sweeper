@@ -11,7 +11,7 @@
 
     <artifactId>backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>minesweeper</name>
+    <name>backend</name>
 
     <dependencies>
         <dependency>
