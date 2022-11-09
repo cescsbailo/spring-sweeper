@@ -10,7 +10,6 @@ import Login from './pages/Login'
 import Logout from './pages/Logout'
 import Error from './pages/Error'
 import SharedLayout from './pages/SharedLayout'
-import Games from './pages/Games'
 import ProtectedRoute from './pages/ProtectedRoute'
 
 const App = () => {

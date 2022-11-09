@@ -30,7 +30,7 @@ const GameList = () => {
     }
 
     return (
-        <Table hover size='sm'>
+        <Table hover size='sm' className='align-middle'>
             <thead>
                 <tr>
                     <th>Player</th>
