@@ -15,11 +15,17 @@ table.board {
     align-self: center;
     border: 10px ridge lightgray;
     cursor: pointer;
+    caption-side: unset;
+    border-collapse: unset;
+    box-sizing : unset;
+    --bs-gutter-x: 0;
+    --bs-gutter-y: 0;
 }
 
 table.board th {
     border: 3px solid gray;
     height: 48px;
+    text-align: center;
 }
 
 table.board td {
@@ -35,6 +41,7 @@ table.board td {
 }
 
 table.board td {
+    box-sizing: unset;
     border-style: outset;
 }
 

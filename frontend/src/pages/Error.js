@@ -13,7 +13,7 @@ const Error = ({ error }) => {
 
     return (
         <section className='section'>
-            <h2>{error.status} : {error.error}</h2>
+            <h4>{error.status} : {error.error}</h4>
             <p>
                 <dl>
                     <dt>Timestamp</dt>
@@ -24,7 +24,6 @@ const Error = ({ error }) => {
                     <dd>{error.message}</dd>
                 </dl>
             </p>
-            <Link to='/' className='btn'>Home</Link>
         </section>
     )
 

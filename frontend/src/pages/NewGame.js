@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { Form, FormGroup, FormLabel, Button } from 'react-bootstrap'
 
 const NewGame = () => {
     const navigate = useNavigate()
@@ -93,29 +94,38 @@ const NewGame = () => {
     }, [getMaxMines])
 
     return (
-        <form id='form-difficulty' onSubmit={startGame}>
-            <label htmlFor='input-difficulty'>Difficulty</label>
-            <select id='input-difficulty' onChange={selectDifficulty}>
-                <option value='easy'>Easy</option>
-                <option value='medium'>Medium</option>
-                <option value='hard'>Hard</option>
-                <option value='custom'>Custom</option>
-            </select>
-            {custom &&
-                <fieldset>
-                    <input name='input-columns' type='range' min={minColumns} max={maxColumns} value={columns} onChange={updateColumns} />
-                    <label htmlFor='input-columns'>Columns: {columns}</label>
-                    <br />
-                    <input name='input-rows' type='range' min={minRows} max={maxRows} value={rows} onChange={updateRows} />
-                    <label htmlFor='input-rows'>Rows: {rows}</label>
-                    <br />
-                    <input name='input-mines' type='range' min={minMines} max={maxMines} value={mines} onChange={updateMines} />
-                    <label htmlFor='input-mines'>Mines: {mines}</label>
-                    <br />
-                </fieldset>
-            }
-            <input type='submit' value='Start' />
-        </form>
+        <section className='col-lg-4'>
+            <Form onSubmit={startGame}>
+                <FormGroup controlId='input-difficulty' className='mb-3'>
+                    <FormLabel></FormLabel>
+                    <Form.Select aria-label='Select Difficulty' onChange={selectDifficulty}>
+                        <option value='easy'>Easy</option>
+                        <option value='medium'>Medium</option>
+                        <option value='hard'>Hard</option>
+                        <option value='custom'>Custom</option>
+                    </Form.Select>
+                </FormGroup>
+                {custom &&
+                    <fieldset className='mb-3'>
+                        <FormGroup controlId='input-columns'>
+                            <Form.Range min={minColumns} max={maxColumns} value={columns} onChange={updateColumns} />
+                            <Form.Label>Columns: {columns}</Form.Label>
+                        </FormGroup>
+                        <FormGroup controlId='input-rows'>
+                            <Form.Range min={minRows} max={maxRows} value={rows} onChange={updateRows} />
+                            <Form.Label>Rows: {rows}</Form.Label>
+                        </FormGroup>
+                        <FormGroup controlId='input-mines'>
+                            <Form.Range min={minMines} max={maxMines} value={mines} onChange={updateMines} />
+                            <Form.Label>Mines: {mines}</Form.Label>
+                        </FormGroup>
+                    </fieldset>
+                }
+                <Button variant='primary' type='submit'>
+                    Start
+                </Button>
+            </Form>
+        </section>
     )
 
 }
