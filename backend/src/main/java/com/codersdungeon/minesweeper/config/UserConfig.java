@@ -1,7 +1,7 @@
 package com.codersdungeon.minesweeper.config;
 
-//import com.codersdungeon.minesweeper.entity.Player;
-//import com.codersdungeon.minesweeper.repository.PlayerRepository;
+import com.codersdungeon.minesweeper.entity.Player;
+import com.codersdungeon.minesweeper.repository.PlayerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,20 +19,21 @@ public class UserConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @Autowired
-//    private PlayerRepository playerRepository;
-//
-//    @PostConstruct
-//    public void createTestUsers() {
-//        LOG.debug("dev config");
-//        if(playerRepository.findByUsername("user").isPresent()){
-//            return;
-//        }
-//
-//        Player player = new Player();
-//        player.setUsername("user");
-//        player.setPassword(passwordEncoder.encode("password"));
-//
-//        playerRepository.save(player);
-//    }
+    @Autowired
+    private PlayerRepository playerRepository;
+/*
+
+    @PostConstruct
+   public void createTestUsers() {
+        LOG.debug("dev config");
+        if (playerRepository.findByUsername("user").isPresent()){
+            return;
+        }
+
+        Player player = new Player();
+        player.setUsername("user");
+        player.setPassword(passwordEncoder.encode("password"));
+
+        playerRepository.save(player);
+    }*/
 }
